@@ -1,0 +1,296 @@
+#PVF_File
+
+[name]
+	`苍穹幕落臂铠`
+
+[basic explain]
+	`技能攻击力 +45%%
+发动透彻之力-最终伤害 +30%%
+属性强化超过150时，赋予自身对应的属性攻击。`
+
+[flavor text]
+	`天尽头， 何处是归崖？ 独倚长天叹悲歌， 一抔净土掩风流。
+  
+该装备可以升级。`
+
+[grade]
+	95
+
+[rarity]
+	4
+
+[usable job]
+	`[fighter]`
+	`[at fighter]`
+[/usable job]
+
+[attach type]
+	`[sealing]`
+
+[minimum level]
+	95
+
+[physical attack]
+	117
+
+[attack speed]
+	-60
+
+[stuck]
+	-1
+
+[price]
+	2000000
+
+[repair price]
+	161600
+
+[value]
+	161600
+
+[physical attack]
+	117
+
+[equipment physical attack]
+	1406	1079
+
+[equipment magical attack]
+	1054	902
+
+[separate attack]
+	723	686
+
+[icon]
+	`item/new_equipment/01_weapon/fighter/gauntlet/gauntlet.img`	158
+
+[field image]
+	`Item/FieldImage.img`	16
+
+[equipment type]
+	`[weapon]`	25
+
+[animation job]
+	`[fighter]`
+
+[variation]
+	51	0
+
+[layer variation]
+	2790
+	`gauntletc`
+
+[equipment ani script]
+	`equipment/character/fighter.lay`
+
+[layer variation]
+	650
+	`gauntletb`
+
+[equipment ani script]
+	`equipment/character/fighter.lay`
+
+[animation job]
+	`[at fighter]`
+
+[variation]
+	52	0
+
+[layer variation]
+	2150
+	`at_gauntleta`
+
+[equipment ani script]
+	`equipment/character/atfighter.lay`
+
+[layer variation]
+	2790
+	`at_gauntletc`
+
+[equipment ani script]
+	`equipment/character/atfighter.lay`
+
+[layer variation]
+	1350
+	`at_gauntletx`
+
+[equipment ani script]
+	`equipment/character/atfighter.lay`
+
+[sub type]
+	1
+
+[move wav]
+	`GUNTLET_TOUCH`
+
+[durability]
+	48
+
+[weight]
+	2900
+
+[item group name]
+	`gauntlet`
+
+[cool time]
+	10000
+
+[skill data up]
+	`[fighter]`	169	`[dungeon type]`	`[level]`	0	`+`	750
+	`[at fighter]`	169	`[dungeon type]`	`[level]`	0	`+`	750
+[/skill data up]
+
+[if]
+	[is stat]
+		`myself`	-1
+		`fire attack`
+		`>`	150
+[/if]
+
+[then]
+	[target]
+		`myself`	-1
+	[equipment duration]
+		10000
+	[appendage]
+		4000
+[/then]
+
+[if]
+	[is stat]
+		`myself`	-1
+		`water attack`
+		`>`	150
+[/if]
+
+[then]
+	[target]
+		`myself`	-1
+	[equipment duration]
+		10000
+	[appendage]
+		4001
+[/then]
+
+[if]
+	[is stat]
+		`myself`	-1
+		`light attack`
+		`>`	150
+[/if]
+
+[then]
+	[target]
+		`myself`	-1
+	[equipment duration]
+		10000
+	[appendage]
+		4002
+[/then]
+
+[if]
+	[is stat]
+		`myself`	-1
+		`dark attack`
+		`>`	150
+[/if]
+
+[then]
+	[target]
+		`myself`	-1
+	[equipment duration]
+		10000
+	[appendage]
+		4003
+[/then]
+
+[if]
+	[my appendage]
+		4000
+	[cooltime]
+		10000
+	[change status]
+		`hp`
+		`>`
+		`%`	0
+		`end`
+[/if]
+
+[then]
+	[target]
+		`myself`	-1
+	[duration]
+		10000
+	[elemental weapon]
+		`fire`
+[/then]
+
+[if]
+	[my appendage]
+		4001
+	[cooltime]
+		10000
+	[change status]
+		`hp`
+		`>`
+		`%`	0
+		`end`
+[/if]
+
+[then]
+	[target]
+		`myself`	-1
+	[duration]
+		10000
+	[elemental weapon]
+		`water`
+[/then]
+
+[if]
+	[my appendage]
+		4002
+	[cooltime]
+		10000
+	[change status]
+		`hp`
+		`>`
+		`%`	0
+		`end`
+[/if]
+
+[then]
+	[target]
+		`myself`	-1
+	[duration]
+		10000
+	[elemental weapon]
+		`light`
+[/then]
+
+[if]
+	[my appendage]
+		4003
+	[cooltime]
+		10000
+	[change status]
+		`hp`
+		`>`
+		`%`	0
+		`end`
+[/if]
+
+[then]
+	[target]
+		`myself`	-1
+	[duration]
+		10000
+	[elemental weapon]
+		`dark`
+[/then]
+
+[possible kiri protect]
+
+[anti evil]
+	400
+
+[icon mark]
+	`item/iconmark.img`	68
