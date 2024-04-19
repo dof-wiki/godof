@@ -89,7 +89,7 @@ func TestParser(t *testing.T) {
 		t.Fatal("layer variation err")
 	}
 	for _, v := range tv.GetCleanTokens() {
-		if v.IsNumber() && v.RawContent() != "2790" {
+		if v.IsInt() && v.RawContent() != "2790" {
 			t.Fatal("layer variation err")
 		}
 		if v.IsString() && v.RawContent() != "gauntletc" {
@@ -105,7 +105,7 @@ func TestParser(t *testing.T) {
 		t.Fatal("layer variation err")
 	}
 	for _, v := range tv.GetCleanTokens() {
-		if v.IsNumber() && v.RawContent() != "1" {
+		if v.IsInt() && v.RawContent() != "1" {
 			t.Fatal("layer variation err")
 		}
 		if v.IsString() && v.RawContent() != "test" {

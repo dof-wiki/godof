@@ -28,7 +28,7 @@ func (p *LstParser) parseLst() {
 	k := -1
 	for _, t := range p.tokens {
 		switch t.tp {
-		case TokenNumber:
+		case TokenInt:
 			k, _ = strconv.Atoi(t.content)
 		case TokenString:
 			if k >= 0 {

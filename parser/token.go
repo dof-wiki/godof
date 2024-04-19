@@ -15,7 +15,7 @@ const (
 	TokenIgnore           // 注释
 	TokenKey
 	TokenString
-	TokenNumber
+	TokenInt
 	TokenFloat
 	TokenDelimiter
 )
@@ -63,8 +63,12 @@ func (t *Token) IsString() bool {
 	return t.tp == TokenString
 }
 
-func (t *Token) IsNumber() bool {
-	return t.tp == TokenNumber
+func (t *Token) IsInt() bool {
+	return t.tp == TokenInt
+}
+
+func (t *Token) IsFloat() bool {
+	return t.tp == TokenFloat
 }
 
 func (t *Token) IsDelimiter() bool {
@@ -278,14 +282,14 @@ func GenTokens(val any) []*Token {
 	case float64:
 		tokens = append(tokens, &Token{tp: TokenFloat, content: strconv.FormatFloat(v, 'f', -1, 64)})
 	case int:
-		tokens = append(tokens, &Token{tp: TokenNumber, content: strconv.Itoa(v)})
+		tokens = append(tokens, &Token{tp: TokenInt, content: strconv.Itoa(v)})
 	case []string:
 		for _, t := range v {
 			tokens = append(tokens, &Token{tp: TokenString, content: t}, NewDelimiterToken("\t"))
 		}
 	case []int:
 		for _, t := range v {
-			tokens = append(tokens, &Token{tp: TokenNumber, content: strconv.Itoa(t)}, NewDelimiterToken("\t"))
+			tokens = append(tokens, &Token{tp: TokenInt, content: strconv.Itoa(t)}, NewDelimiterToken("\t"))
 		}
 	}
 	return tokens

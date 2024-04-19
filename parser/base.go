@@ -37,8 +37,8 @@ func (p *Parser) parse() {
 					})
 					continue
 				default:
-					if c >= '0' && c <= '9' {
-						curToken.tp = TokenNumber
+					if (c >= '0' && c <= '9') || c == '-' {
+						curToken.tp = TokenInt
 						curToken.content += string(c)
 					}
 				}
@@ -67,7 +67,7 @@ func (p *Parser) parse() {
 			} else {
 				curToken.content += string(c)
 			}
-		case TokenNumber, TokenFloat:
+		case TokenInt, TokenFloat:
 			if c == '.' {
 				curToken.tp = TokenFloat
 				curToken.content += string(c)
