@@ -67,8 +67,11 @@ func (p *Parser) parse() {
 			} else {
 				curToken.content += string(c)
 			}
-		case TokenNumber:
-			if c < '0' || c > '9' {
+		case TokenNumber, TokenFloat:
+			if c == '.' {
+				curToken.tp = TokenFloat
+				curToken.content += string(c)
+			} else if c < '0' || c > '9' {
 				tokens = append(tokens, curToken.Copy())
 				curToken.Clear()
 			} else {
@@ -203,6 +206,18 @@ func (p *Parser) GetStrings(key string) ([]string, error) {
 
 func (p *Parser) SetStrings(key string, value []string, isClosed ...bool) {
 	p.setKV(key, GenTokens(value), isClosed...)
+}
+
+func (p *Parser) SetFloat(key string, value float64, isClosed ...bool) {
+	p.setKV(key, GenTokens(value), isClosed...)
+}
+
+func (p *Parser) GetFloat(key string) (float64, error) {
+	tv, _, _ := p.getKV(key)
+	if tv == nil {
+		return 0, &ErrEmptyValue{}
+	}
+	return tv.GetFloat()
 }
 
 func (p *Parser) GetAny(key string) *TokenValue {

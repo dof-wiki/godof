@@ -146,3 +146,32 @@ func TestParseSubField(t *testing.T) {
 		t.Fatal("dungeon static data err")
 	}
 }
+
+func TestParseFloat(t *testing.T) {
+	content, err := os.ReadFile("../test/earthbreak.skl")
+	if err != nil {
+		t.Fatal(err)
+	}
+	c := string(content)
+	p := NewParser(c)
+	f, err := p.GetFloat("warroom")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if f != 1.2 {
+		t.Fatal("warroom err")
+	}
+
+	p.SetFloat("warroom", 1.3)
+	f, err = p.GetFloat("warroom")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if f != 1.3 {
+		t.Fatal("warroom err")
+	}
+
+	for _, item := range p.GetAny("level property").cleanTokens {
+		t.Log(item)
+	}
+}

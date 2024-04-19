@@ -16,6 +16,7 @@ const (
 	TokenKey
 	TokenString
 	TokenNumber
+	TokenFloat
 	TokenDelimiter
 )
 
@@ -68,6 +69,14 @@ func (t *Token) IsNumber() bool {
 
 func (t *Token) IsDelimiter() bool {
 	return t.tp == TokenDelimiter
+}
+
+func (t *Token) GetInt() int {
+	return lo.Must(strconv.Atoi(t.content))
+}
+
+func (t *Token) GetFloat() float64 {
+	return lo.Must(strconv.ParseFloat(t.content, 64))
 }
 
 func (t *Token) Clear() {
@@ -189,6 +198,35 @@ func (tv *TokenValue) GetInt() (int, error) {
 	return list[0], nil
 }
 
+func (tv *TokenValue) GetFloats() ([]float64, error) {
+	var err error
+	ret := lo.FilterMap(tv.cleanTokens, func(item *Token, _ int) (float64, bool) {
+		if item.tp == TokenDelimiter {
+			return 0, false
+		}
+		v, er := strconv.ParseFloat(item.RawContent(), 64)
+		if er != nil {
+			err = &ErrValueType{}
+		}
+		return v, true
+	})
+	return ret, err
+}
+
+func (tv *TokenValue) GetFloat() (float64, error) {
+	list, err := tv.GetFloats()
+	if err != nil {
+		return 0, err
+	}
+	if len(list) == 0 {
+		return 0, &ErrEmptyValue{}
+	}
+	if len(list) > 1 {
+		return 0, &ErrValueType{}
+	}
+	return list[0], nil
+}
+
 func (tv *TokenValue) getSub(key string) (*TokenValue, int, int) {
 	for i, t := range tv.cleanTokens {
 		if t.IsKey() && t.content == key {
@@ -237,6 +275,8 @@ func GenTokens(val any) []*Token {
 		} else {
 			tokens = append(tokens, &Token{tp: TokenString, content: v})
 		}
+	case float64:
+		tokens = append(tokens, &Token{tp: TokenFloat, content: strconv.FormatFloat(v, 'f', -1, 64)})
 	case int:
 		tokens = append(tokens, &Token{tp: TokenNumber, content: strconv.Itoa(v)})
 	case []string:
