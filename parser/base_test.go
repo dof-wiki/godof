@@ -4,6 +4,7 @@ import (
 	"github.com/samber/lo"
 	"os"
 	"testing"
+	"time"
 )
 
 func TestParser(t *testing.T) {
@@ -115,4 +116,33 @@ func TestParser(t *testing.T) {
 	p.SetInt("creation rate", 10)
 	p.SetInts("static", []int{10, 11, 12}, true)
 	t.Log(p.Render())
+}
+
+func TestParseSpeed(t *testing.T) {
+	content, err := os.ReadFile("../test/102010612.equ")
+	if err != nil {
+		t.Fatal(err)
+	}
+	c := string(content)
+	st := time.Now()
+	for i := 0; i < 100; i++ {
+		NewParser(c)
+	}
+	d := time.Since(st)
+	t.Logf("spent %d ms", d.Milliseconds())
+}
+
+func TestParseSubField(t *testing.T) {
+	content, err := os.ReadFile("../test/earthbreak.skl")
+	if err != nil {
+		t.Fatal(err)
+	}
+	c := string(content)
+	p := NewParser(c)
+	tv := p.GetAny("dungeon")
+	subTv := tv.GetSub("static data")
+	ints, _ := subTv.GetInts()
+	if len(ints) != 3 {
+		t.Fatal("dungeon static data err")
+	}
 }

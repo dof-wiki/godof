@@ -189,6 +189,38 @@ func (tv *TokenValue) GetInt() (int, error) {
 	return list[0], nil
 }
 
+func (tv *TokenValue) getSub(key string) (*TokenValue, int, int) {
+	for i, t := range tv.cleanTokens {
+		if t.IsKey() && t.content == key {
+			for j, t2 := range tv.cleanTokens[i+1:] {
+				if t2.IsCloseKeyBy(key) {
+					return NewTokenValue(tv.cleanTokens[i+1 : i+1+j]), i + 1, i + j
+				}
+			}
+			return NewTokenValue(tv.cleanTokens[i+1:]), i + 1, len(tv.cleanTokens)
+		}
+	}
+	return nil, 0, 0
+}
+
+func (tv *TokenValue) GetSub(key string) *TokenValue {
+	ret, _, _ := tv.getSub(key)
+	return ret
+}
+
+func (tv *TokenValue) setSub(key string, values []*Token, isClosed ...bool) {
+	tokens, i, j := tv.getSub(key)
+	if tokens == nil {
+		return
+	}
+	tokens.ReplaceValue(values)
+	tv.cleanTokens = append(tv.cleanTokens[:i], append(tokens.GetFull(), tv.cleanTokens[j+1:]...)...)
+}
+
+func (tv *TokenValue) SetSub(key string, values []*Token, isClosed ...bool) {
+	tv.setSub(key, values, isClosed...)
+}
+
 func NewDelimiterToken(c string) *Token {
 	return &Token{
 		tp:      TokenDelimiter,

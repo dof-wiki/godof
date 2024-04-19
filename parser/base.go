@@ -216,3 +216,11 @@ func (p *Parser) GetAny(key string) *TokenValue {
 func (p *Parser) SetAny(key string, value []*Token, isClosed ...bool) {
 	p.setKV(key, value, isClosed...)
 }
+
+func (p *Parser) DelKey(key string) {
+	p.delKV(key)
+}
+
+func (p *Parser) AddAny(key string, value []*Token, isClosed ...bool) {
+	p.addKV(key, value, isClosed...)
+}
