@@ -192,3 +192,13 @@ func TestParseRawContent(t *testing.T) {
 	}, true)
 	fmt.Println(p.Render())
 }
+
+func Test2(t *testing.T) {
+	content, err := os.ReadFile("../test/earthbreak.skl")
+	if err != nil {
+		t.Fatal(err)
+	}
+	c := string(content)
+	p := NewParser(c)
+	fmt.Println(p.Render())
+}

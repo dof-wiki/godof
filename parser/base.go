@@ -72,7 +72,7 @@ func (p *Parser) parse() {
 				curToken.tp = TokenFloat
 				curToken.content += string(c)
 			} else if c < '0' || c > '9' {
-				tokens = append(tokens, curToken.Copy())
+				tokens = append(tokens, curToken.Copy(), NewDelimiterToken(string(c)))
 				curToken.Clear()
 			} else {
 				curToken.content += string(c)
