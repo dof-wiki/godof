@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"fmt"
 	"github.com/samber/lo"
 	"os"
 	"testing"
@@ -174,4 +175,20 @@ func TestParseFloat(t *testing.T) {
 	for _, item := range p.GetAny("level property").cleanTokens {
 		t.Log(item)
 	}
+}
+
+func TestParseRawContent(t *testing.T) {
+	content, err := os.ReadFile("../test/earthbreak.skl")
+	if err != nil {
+		t.Fatal(err)
+	}
+	c := string(content)
+	p := NewParser(c)
+	p.SetAny("test any", []*Token{
+		NewRawContentToken("`test`\t989"),
+	}, true)
+	p.SetAny("test any 2", []*Token{
+		NewRawContentToken("[sub key]\n`test`\t989\n[/sub key]"),
+	}, true)
+	fmt.Println(p.Render())
 }

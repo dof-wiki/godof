@@ -18,6 +18,7 @@ const (
 	TokenInt
 	TokenFloat
 	TokenDelimiter
+	TokenRawContent
 )
 
 type Token struct {
@@ -266,6 +267,13 @@ func (tv *TokenValue) SetSub(key string, values []*Token, isClosed ...bool) {
 func NewDelimiterToken(c string) *Token {
 	return &Token{
 		tp:      TokenDelimiter,
+		content: c,
+	}
+}
+
+func NewRawContentToken(c string) *Token {
+	return &Token{
+		tp:      TokenRawContent,
 		content: c,
 	}
 }
