@@ -17,6 +17,7 @@ const (
 	TokenString
 	TokenInt
 	TokenFloat
+	TokenCommand
 	TokenDelimiter
 	TokenRawContent
 )
@@ -39,6 +40,8 @@ func (t *Token) Render() string {
 		return fmt.Sprintf("[%s]", t.content)
 	case TokenString:
 		return fmt.Sprintf("`%s`", t.content)
+	case TokenCommand:
+		return fmt.Sprintf("{%s}", t.content)
 	default:
 		return t.content
 	}

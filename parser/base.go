@@ -36,6 +36,8 @@ func (p *Parser) parse() {
 						content: string(c),
 					})
 					continue
+				case '{':
+					curToken.tp = TokenCommand
 				default:
 					if (c >= '0' && c <= '9') || c == '-' {
 						curToken.tp = TokenInt
@@ -62,6 +64,13 @@ func (p *Parser) parse() {
 			}
 		case TokenString:
 			if c == '`' {
+				tokens = append(tokens, curToken.Copy())
+				curToken.Clear()
+			} else {
+				curToken.content += string(c)
+			}
+		case TokenCommand:
+			if c == '}' {
 				tokens = append(tokens, curToken.Copy())
 				curToken.Clear()
 			} else {
