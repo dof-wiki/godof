@@ -107,6 +107,10 @@ func (p *Parser) Render() string {
 	return result
 }
 
+func (p *Parser) GetTokens() []*Token {
+	return p.tokens
+}
+
 func (p *Parser) getKV(key string) (*TokenValue, int, int) {
 	for i, t := range p.tokens {
 		if t.IsKey() && t.RawContent() == key {
@@ -142,6 +146,7 @@ func (p *Parser) addKV(key string, values []*Token, isClosed ...bool) {
 			tp:      TokenKey,
 			content: "/" + key,
 		}, NewDelimiterToken("\n"))
+		p.closedKeys[key] = true
 	}
 	p.tokens = append(p.tokens, newTokens...)
 }
