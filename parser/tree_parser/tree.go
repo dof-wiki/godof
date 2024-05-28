@@ -26,6 +26,7 @@ func NewTreeNode(label string, isClose bool, values ...*Token) *TreeNode {
 		Value:    values,
 		children: make([]*TreeNode, 0),
 	}
+	n.ParseChildren()
 	return n
 }
 
@@ -42,6 +43,16 @@ func (n *TreeNode) String() string {
 		ret += fmt.Sprintf("[/%s]", n.Label)
 	}
 	return ret
+}
+
+func (n *TreeNode) ParseChildren() {
+	closedKeys := make(map[string]bool)
+	for _, t := range n.Value {
+		if t.IsCloseKey() {
+			closedKeys[t.content] = true
+		}
+	}
+	n.parseChildren(closedKeys)
 }
 
 func (n *TreeNode) parseChildren(closedKeys map[string]bool) {
