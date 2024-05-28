@@ -49,7 +49,7 @@ func (n *TreeNode) ParseChildren() {
 	closedKeys := make(map[string]bool)
 	for _, t := range n.Value {
 		if t.IsCloseKey() {
-			closedKeys[t.content] = true
+			closedKeys[t.content[1:]] = true
 		}
 	}
 	n.parseChildren(closedKeys)
