@@ -3,7 +3,6 @@ package img
 import (
 	"github.com/dof-wiki/godof/npk/image"
 	"github.com/dof-wiki/godof/npk/image/formatter"
-	"log"
 )
 
 type ImgV2 struct {
@@ -14,8 +13,7 @@ func (i *ImgV2) onOpen(img *Img) error {
 	for j := int32(0); j < img.imageCount; j++ {
 		newImage, err := image.NewImage(img.f)
 		if err != nil {
-			log.Printf("open image err %v", err)
-			continue
+			return err
 		}
 		newImage.FixSize()
 		images = append(images, newImage)

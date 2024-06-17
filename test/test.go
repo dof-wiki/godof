@@ -10,7 +10,11 @@ import (
 )
 
 func main() {
-	path := "/Users/ziipin/Downloads/新版婚纱皮肤导入/！！！newmarryme.NPK"
+	os.RemoveAll("output")
+	os.Mkdir("output", os.ModePerm)
+	//path := "/Users/ziipin/Downloads/新版婚纱皮肤导入/！！！newmarryme.NPK"
+	//path := "D:\\Games\\dnf\\DNF\\ImagePacks2\\!!!!+(登入).NPK"
+	path := "D:\\Games\\dnf\\DNF\\ImagePacks2\\!!!双天空城_旧版.NPK"
 	f, err := os.Open(path)
 	if err != nil {
 		panic(err)
@@ -21,19 +25,18 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	for _, file := range n.Files {
+	for j, file := range n.Files[4:] {
 		img, err := file.ToIMG()
 		if err != nil {
-			panic(err)
+			continue
 		}
 		for i, item := range img.Images {
 			image, err := img.Build(item)
 			if err != nil {
 				panic(err)
 			}
-			saveImage(image, fmt.Sprintf("output/%d.png", i))
+			saveImage(image, fmt.Sprintf("output/%d_%d.png", j, i))
 		}
-		break
 	}
 }
 

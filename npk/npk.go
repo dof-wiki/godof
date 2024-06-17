@@ -2,7 +2,6 @@ package npk
 
 import (
 	"errors"
-	"fmt"
 	"github.com/dof-wiki/godof/utils"
 	"github.com/dof-wiki/godof/utils/binary_helper"
 	"io"
@@ -17,8 +16,6 @@ func Open(f io.ReadWriteSeeker) (*Npk, error) {
 	magic := binary_helper.ReadStringByLen(f, 16)
 	magic = utils.TrimStringZeros(magic)
 	if magic != NPK_MAGIC {
-		fmt.Println(magic, len(magic), magic[len(magic)-1])
-		fmt.Println(NPK_MAGIC, len(NPK_MAGIC))
 		return nil, errors.New("file is not a valid npk")
 	}
 	n := &Npk{

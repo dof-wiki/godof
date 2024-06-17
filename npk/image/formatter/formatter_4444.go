@@ -9,7 +9,7 @@ type Formatter4444 struct{}
 
 func (f *Formatter4444) ToRaw(data []byte) []byte {
 	reader := bytes.NewReader(data)
-	buf := make([]byte, len(data))
+	buf := make([]byte, 0, len(data))
 	writer := bytes.NewBuffer(buf)
 
 	for {
