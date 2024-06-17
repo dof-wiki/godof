@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"bytes"
 	"golang.org/x/text/encoding/korean"
 	"golang.org/x/text/encoding/simplifiedchinese"
 	"golang.org/x/text/encoding/traditionalchinese"
@@ -48,7 +49,7 @@ func Decode(data []byte, encode string) (string, error) {
 	switch encode {
 	case "big5":
 		decoder = traditionalchinese.Big5.NewDecoder()
-	case "cp949":
+	case "cp949", "euc_kr":
 		decoder = korean.EUCKR.NewDecoder()
 	case "gbk":
 		decoder = simplifiedchinese.GBK.NewDecoder()
@@ -64,4 +65,16 @@ func Decode(data []byte, encode string) (string, error) {
 	}
 
 	return string(decodedData), nil
+}
+
+func TrimStringZeros(s string) string {
+	return string(TrimBytesZeros([]byte(s)))
+}
+
+func TrimBytesZeros(data []byte) []byte {
+	idx := bytes.IndexByte(data, 0x00)
+	if idx != -1 {
+		return data[:idx]
+	}
+	return data
 }

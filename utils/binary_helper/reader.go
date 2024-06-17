@@ -50,3 +50,12 @@ func ReadBytesByLen[T constraints.Integer](f io.Reader, length *T) []byte {
 	}
 	return buffer
 }
+
+func ReadStringByLen(f io.Reader, length int) string {
+	buffer := make([]byte, length)
+	_, err := io.ReadFull(f, buffer)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return string(buffer)
+}
