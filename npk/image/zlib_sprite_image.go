@@ -8,6 +8,21 @@ import (
 type ZlibSpriteImage struct {
 }
 
+func (z *ZlibSpriteImage) GetData() []byte {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (z *ZlibSpriteImage) GetFormat() int32 {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (z *ZlibSpriteImage) WH() (int, int) {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (z *ZlibSpriteImage) Build() (image2.Image, error) {
 	//TODO implement me
 	panic("implement me")

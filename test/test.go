@@ -27,7 +27,7 @@ func main() {
 			panic(err)
 		}
 		for i, item := range img.Images {
-			image, err := item.Build()
+			image, err := img.Build(item)
 			if err != nil {
 				panic(err)
 			}

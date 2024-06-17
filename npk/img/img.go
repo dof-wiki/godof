@@ -6,6 +6,7 @@ import (
 	"github.com/dof-wiki/godof/npk/image"
 	"github.com/dof-wiki/godof/utils"
 	"github.com/dof-wiki/godof/utils/binary_helper"
+	image2 "image"
 	"io"
 )
 
@@ -15,7 +16,8 @@ const (
 )
 
 type ImgIO interface {
-	onOpen(img *Img) error
+	onOpen(*Img) error
+	build(image.Image) ([]byte, int, int, error)
 }
 
 func newImgIO(version int32) ImgIO {
@@ -24,6 +26,8 @@ func newImgIO(version int32) ImgIO {
 		return new(ImgV1)
 	case 2:
 		return new(ImgV2)
+	case 4:
+		return newImgV4()
 	}
 	return nil
 }
@@ -37,6 +41,16 @@ type Img struct {
 	io         ImgIO
 
 	Images []image.Image
+}
+
+func (i *Img) Build(i2 image.Image) (image2.Image, error) {
+	raw, w, h, err := i.io.build(i2)
+	if err != nil {
+		return nil, err
+	}
+	i3 := image2.NewRGBA(image2.Rect(0, 0, w, h))
+	copy(i3.Pix, raw)
+	return i3, nil
 }
 
 func newImg(f io.ReadSeeker, version, keep, imagesSize, imageCount int32) (*Img, error) {

@@ -2,6 +2,7 @@ package img
 
 import (
 	"github.com/dof-wiki/godof/npk/image"
+	"github.com/dof-wiki/godof/npk/image/formatter"
 	"log"
 )
 
@@ -33,4 +34,14 @@ func (i *ImgV2) onOpen(img *Img) error {
 		offset += item.GetSize()
 	}
 	return nil
+}
+
+func (i *ImgV2) build(i2 image.Image) ([]byte, int, int, error) {
+	data := i2.GetData()
+	raw, err := formatter.FormatToRaw(data, i2.GetFormat())
+	if err != nil {
+		return nil, 0, 0, nil
+	}
+	w, h := i2.WH()
+	return raw, w, h, nil
 }

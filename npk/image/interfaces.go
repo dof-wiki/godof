@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/dof-wiki/godof/utils/binary_helper"
 	"github.com/samber/lo"
-	image2 "image"
 	"io"
 )
 
@@ -13,7 +12,9 @@ type Image interface {
 	SetOffset(offset int64)
 	GetSize() int32
 	FixSize()
-	Build() (image2.Image, error)
+	GetData() []byte
+	GetFormat() int32
+	WH() (int, int)
 }
 
 var ImageInstanceMap = map[int32]func(reader io.ReadSeeker, format int32) (Image, error){

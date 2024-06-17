@@ -2,11 +2,22 @@ package img
 
 import (
 	"github.com/dof-wiki/godof/npk/image"
+	"github.com/dof-wiki/godof/npk/image/formatter"
 	"io"
 	"log"
 )
 
 type ImgV1 struct {
+}
+
+func (i *ImgV1) build(i2 image.Image) ([]byte, int, int, error) {
+	data := i2.GetData()
+	raw, err := formatter.FormatToRaw(data, i2.GetFormat())
+	if err != nil {
+		return nil, 0, 0, nil
+	}
+	w, h := i2.WH()
+	return raw, w, h, nil
 }
 
 func (i *ImgV1) onOpen(img *Img) error {

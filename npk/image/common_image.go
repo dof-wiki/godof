@@ -35,6 +35,10 @@ func (c *CommonImage) GetData() []byte {
 	return c.data
 }
 
+func (c *CommonImage) GetFormat() int32 {
+	return c.format
+}
+
 func (c *CommonImage) Build() (image2.Image, error) {
 	data := c.GetData()
 	raw, err := formatter.FormatToRaw(data, c.format)
@@ -44,6 +48,10 @@ func (c *CommonImage) Build() (image2.Image, error) {
 	i := image2.NewRGBA(image2.Rect(0, 0, int(c.w), int(c.h)))
 	copy(i.Pix, raw)
 	return i, nil
+}
+
+func (c *CommonImage) WH() (int, int) {
+	return int(c.w), int(c.h)
 }
 
 func (c *CommonImage) SetOffset(offset int64) {

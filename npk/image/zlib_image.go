@@ -1,9 +1,7 @@
 package image
 
 import (
-	"github.com/dof-wiki/godof/npk/image/formatter"
 	"github.com/dof-wiki/godof/utils/zlib_helper"
-	image2 "image"
 	"io"
 )
 
@@ -11,6 +9,14 @@ type ZlibImage struct {
 	c *CommonImage
 
 	zipData []byte
+}
+
+func (z *ZlibImage) GetFormat() int32 {
+	return z.c.GetFormat()
+}
+
+func (z *ZlibImage) WH() (int, int) {
+	return z.c.WH()
 }
 
 func (z *ZlibImage) SetOffset(offset int64) {
@@ -29,17 +35,6 @@ func (z *ZlibImage) GetData() []byte {
 		z.loadData()
 	}
 	return z.c.data
-}
-
-func (z *ZlibImage) Build() (image2.Image, error) {
-	data := z.GetData()
-	raw, err := formatter.FormatToRaw(data, z.c.format)
-	if err != nil {
-		return nil, err
-	}
-	i := image2.NewRGBA(image2.Rect(0, 0, int(z.c.w), int(z.c.h)))
-	copy(i.Pix, raw)
-	return i, nil
 }
 
 func (z *ZlibImage) loadData() {

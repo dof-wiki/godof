@@ -8,6 +8,21 @@ import (
 type LinkImage struct {
 }
 
+func (l *LinkImage) GetData() []byte {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (l *LinkImage) GetFormat() int32 {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (l *LinkImage) WH() (int, int) {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (l *LinkImage) Build() (image2.Image, error) {
 	//TODO implement me
 	panic("implement me")

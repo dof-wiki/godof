@@ -1,6 +1,8 @@
 package formatter
 
 import (
+	"bytes"
+	"encoding/binary"
 	"errors"
 )
 
@@ -27,4 +29,20 @@ func FormatToRaw(data []byte, format int32) ([]byte, error) {
 		return nil, errors.New("unknown formatter")
 	}
 	return formatter.ToRaw(data), nil
+}
+
+func FormatToRawIndexes(data []byte, colors [][]uint8) ([]byte, error) {
+	reader := bytes.NewReader(data)
+	buf := make([]byte, 0, len(data))
+	writer := bytes.NewBuffer(buf)
+	for {
+		var idx uint8
+		if err := binary.Read(reader, binary.LittleEndian, &idx); err != nil {
+			break
+		}
+		for _, v := range colors[idx] {
+			writer.WriteByte(v)
+		}
+	}
+	return writer.Bytes(), nil
 }
