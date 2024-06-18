@@ -17,7 +17,7 @@ const (
 
 type ImgIO interface {
 	onOpen(*Img) error
-	build(image.Image) ([]byte, int, int, error)
+	build(image.Image) ([]byte, int, int, string, error)
 }
 
 func newImgIO(version int32) ImgIO {
@@ -28,6 +28,8 @@ func newImgIO(version int32) ImgIO {
 		return new(ImgV2)
 	case 4:
 		return newImgV4()
+	case 5:
+		return newImgV5()
 	}
 	return nil
 }
@@ -44,13 +46,17 @@ type Img struct {
 }
 
 func (i *Img) Build(i2 image.Image) (image2.Image, error) {
-	raw, w, h, err := i.io.build(i2)
+	raw, w, h, format, err := i.io.build(i2)
 	if err != nil {
 		return nil, err
 	}
-	i3 := image2.NewRGBA(image2.Rect(0, 0, w, h))
-	copy(i3.Pix, raw)
-	return i3, nil
+	if format == "dds" {
+		return nil, errors.New("unsupport dds")
+	} else {
+		i3 := image2.NewRGBA(image2.Rect(0, 0, w, h))
+		copy(i3.Pix, raw)
+		return i3, nil
+	}
 }
 
 func newImg(f io.ReadSeeker, version, keep, imagesSize, imageCount int32) (*Img, error) {

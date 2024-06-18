@@ -10,14 +10,14 @@ import (
 type ImgV1 struct {
 }
 
-func (i *ImgV1) build(i2 image.Image) ([]byte, int, int, error) {
+func (i *ImgV1) build(i2 image.Image) ([]byte, int, int, string, error) {
 	data := i2.GetData()
 	raw, err := formatter.FormatToRaw(data, i2.GetFormat())
 	if err != nil {
-		return nil, 0, 0, nil
+		return nil, 0, 0, "", nil
 	}
 	w, h := i2.WH()
-	return raw, w, h, nil
+	return raw, w, h, "", nil
 }
 
 func (i *ImgV1) onOpen(img *Img) error {

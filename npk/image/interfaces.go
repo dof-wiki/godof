@@ -18,8 +18,9 @@ type Image interface {
 }
 
 var ImageInstanceMap = map[int32]func(reader io.ReadSeeker, format int32) (Image, error){
-	IMAGE_EXTRA_NONE: NewCommonImage,
-	IMAGE_EXTRA_ZLIB: NewZlibImage,
+	IMAGE_EXTRA_NONE:        NewCommonImage,
+	IMAGE_EXTRA_ZLIB:        NewZlibImage,
+	IMAGE_EXTRA_ZLIB_SPRITE: NewZlibSpriteImage,
 }
 
 func NewImage(reader io.ReadSeeker) (Image, error) {

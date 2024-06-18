@@ -3,6 +3,7 @@ package formatter
 import (
 	"bytes"
 	"encoding/binary"
+	"io"
 )
 
 type Formatter1555 struct {
@@ -40,4 +41,29 @@ func (f *Formatter1555) formatColor(v1, v2 uint8) []uint8 {
 	a := v2 >> 7
 	a = a * 0xff
 	return []uint8{r, g, b, a}
+}
+
+func (f *Formatter1555) ToRawCrop(data []byte, w, left, top, right, bottom int32) []byte {
+	reader := bytes.NewReader(data)
+	buf := make([]byte, 0, len(data))
+	writer := bytes.NewBuffer(buf)
+	for y := top; y < bottom; y++ {
+		o := y * w * 2
+		for x := left; x < right; x++ {
+			reader.Seek(int64(o+x*2), io.SeekStart)
+			var v1, v2 uint8
+			err := binary.Read(reader, binary.LittleEndian, &v1)
+			if err != nil {
+				break
+			}
+			err = binary.Read(reader, binary.LittleEndian, &v2)
+			if err != nil {
+				break
+			}
+			for _, v := range f.formatColor(v1, v2) {
+				writer.WriteByte(v)
+			}
+		}
+	}
+	return writer.Bytes()
 }

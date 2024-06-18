@@ -29,14 +29,11 @@ func newColorBoard(reader io.ReadSeeker) *ColorBoard {
 }
 
 type ImgV4 struct {
-	v2         *ImgV2
 	colorBoard *ColorBoard
 }
 
 func newImgV4() *ImgV4 {
-	return &ImgV4{
-		v2: new(ImgV2),
-	}
+	return &ImgV4{}
 }
 
 func (i *ImgV4) loadColorBoard(img *Img) {
@@ -45,13 +42,32 @@ func (i *ImgV4) loadColorBoard(img *Img) {
 
 func (i *ImgV4) onOpen(img *Img) error {
 	i.colorBoard = newColorBoard(img.f)
-	if err := i.v2.onOpen(img); err != nil {
-		return err
+	images := make([]image.Image, 0, img.imageCount)
+	for j := int32(0); j < img.imageCount; j++ {
+		newImage, err := image.NewImage(img.f)
+		if err != nil {
+			return err
+		}
+		newImage.FixSize()
+		images = append(images, newImage)
+	}
+	img.Images = images
+
+	offset, _ := img.f.Seek(0, io.SeekCurrent)
+	for _, item := range img.Images {
+		if _, ok := item.(*image.LinkImage); ok {
+			continue
+		}
+		if _, ok := item.(*image.ZlibSpriteImage); ok {
+			continue
+		}
+		item.SetOffset(offset)
+		offset += int64(item.GetSize())
 	}
 	return nil
 }
 
-func (i *ImgV4) build(i2 image.Image) ([]byte, int, int, error) {
+func (i *ImgV4) build(i2 image.Image) ([]byte, int, int, string, error) {
 	_, isZlib := i2.(*image.ZlibImage)
 	var raw []byte
 	var err error
@@ -61,8 +77,8 @@ func (i *ImgV4) build(i2 image.Image) ([]byte, int, int, error) {
 		raw, err = formatter.FormatToRaw(i2.GetData(), i2.GetFormat())
 	}
 	if err != nil {
-		return nil, 0, 0, nil
+		return nil, 0, 0, "", nil
 	}
 	w, h := i2.WH()
-	return raw, w, h, nil
+	return raw, w, h, "", nil
 }

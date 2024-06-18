@@ -14,7 +14,8 @@ func main() {
 	os.Mkdir("output", os.ModePerm)
 	//path := "/Users/ziipin/Downloads/新版婚纱皮肤导入/！！！newmarryme.NPK"
 	//path := "D:\\Games\\dnf\\DNF\\ImagePacks2\\!!!!+(登入).NPK"
-	path := "D:\\Games\\dnf\\DNF\\ImagePacks2\\!!!双天空城_旧版.NPK"
+	//path := "D:\\Games\\dnf\\DNF\\ImagePacks2\\!!!双天空城_旧版.NPK"
+	path := "/Users/ziipin/Downloads/sprite_character_fighter_effect_poisonexplosioncustom.NPK"
 	f, err := os.Open(path)
 	if err != nil {
 		panic(err)
@@ -25,7 +26,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	for j, file := range n.Files[4:] {
+	for j, file := range n.Files {
 		img, err := file.ToIMG()
 		if err != nil {
 			continue
